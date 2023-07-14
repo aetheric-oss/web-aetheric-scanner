@@ -1,7 +1,8 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  modules: ["@nuxtjs/ionic"],
   srcDir: "src/",
-
+  ssr: false,
   app: {
     head: {
       titleTemplate: (chunk) => `FlyArrow.io${chunk && " - " + chunk}`,

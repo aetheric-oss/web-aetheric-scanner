@@ -9,6 +9,8 @@ node_modules
 .nuxt
 .output
 dist
+ios/
+android/
 
 # Logs
 npm-debug.log*

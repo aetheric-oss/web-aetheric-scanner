@@ -1,61 +1,66 @@
 <template>
-    <div v-if="location == null">
-        <div class="container">
-            <h2 class="fancy-title">
-                You must enable location services to use this app.
-            </h2>
-            <button class="fancy-button">
-                <nuxt-link to="/" class="fancy-link">Go Back</nuxt-link>
-            </button>
-        </div>
-    </div>
-    <div v-else>
-        <div v-if="result != null">
+    <ion-page>
+        <div v-if="location == null">
             <div class="container">
-                <div class="result">
-                    <h1 class="fancy-title">Success!</h1>
-                    <p class="fancy-text">Parcel Id: {{ result }}</p>
-                    <p class="fancy-text">
-                        Latitude: {{ location.coords.latitude }}
-                    </p>
-                    <p class="fancy-text">
-                        Longitude: {{ location.coords.longitude }}
-                    </p>
-                    <div>
-                        <p v-if="uploadError" class="error-text">
-                            {{ uploadError }}
-                        </p>
-                        <button
-                            class="fancy-button"
-                            @click="uploadParcelData"
-                            :disabled="uploading || uploaded"
-                        >
-                            <span v-if="uploading">Uploading...</span>
-                            <span v-else-if="uploaded">Uploaded!</span>
-                            <span v-else>Upload Parcel Data</span>
-                        </button>
-                    </div>
-                    <button class="fancy-button" @click="result = null">
-                        Next Package
-                    </button>
-                </div>
+                <h2 class="fancy-title">
+                    You must enable location services to use this app.
+                </h2>
+                <button class="fancy-button">
+                    <nuxt-link to="/" class="fancy-link">Go Back</nuxt-link>
+                </button>
             </div>
         </div>
-        <div class="fullscreen" v-else>
-            <qrcode-stream
-                :key="_uid"
-                :track="track"
-                @init="onInit"
-                @decode="onDecode"
-            >
-                <div class="loading-indicator" v-if="loading">Loading...</div>
-            </qrcode-stream>
+        <div v-else>
+            <div v-if="result != null">
+                <div class="container">
+                    <div class="result">
+                        <h1 class="fancy-title">Success!</h1>
+                        <p class="fancy-text">Parcel Id: {{ result }}</p>
+                        <p class="fancy-text">
+                            Latitude: {{ location.coords.latitude }}
+                        </p>
+                        <p class="fancy-text">
+                            Longitude: {{ location.coords.longitude }}
+                        </p>
+                        <div>
+                            <p v-if="uploadError" class="error-text">
+                                {{ uploadError }}
+                            </p>
+                            <button
+                                class="fancy-button"
+                                @click="uploadParcelData"
+                                :disabled="uploading || uploaded"
+                            >
+                                <span v-if="uploading">Uploading...</span>
+                                <span v-else-if="uploaded">Uploaded!</span>
+                                <span v-else>Upload Parcel Data</span>
+                            </button>
+                        </div>
+                        <button class="fancy-button" @click="result = null">
+                            Next Package
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="fullscreen" v-else>
+                <qrcode-stream
+                    :key="_uid"
+                    :track="track"
+                    @init="onInit"
+                    @decode="onDecode"
+                >
+                    <div class="loading-indicator" v-if="loading">
+                        Loading...
+                    </div>
+                </qrcode-stream>
+            </div>
         </div>
-    </div>
+    </ion-page>
 </template>
 
 <script>
     import { DEVICE_UUID } from "../data/data";
+    import { Camera } from "@capacitor/camera";
 
     export default {
         name: "Scan",
@@ -71,6 +76,8 @@
             };
         },
         mounted() {
+            Camera.requestPermissions();
+            console.log(this.$route.query);
             if (this.$route.query.longitude && this.$route.query.latitude) {
                 this.location = {
                     coords: {
@@ -215,12 +222,9 @@
     }
 
     .fullscreen {
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
+        /* z-index: 1000; */
+        height: 100%;
+        width: 100%;
     }
 
     .loading-indicator {

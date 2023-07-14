@@ -1,13 +1,35 @@
 <template>
-    <div class="container">
+    <ion-page>
+        <ion-header>
+            <ion-toolbar class="toolbar-md-primary">
+                <ion-title>Parcel Scanner</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="content">
+            <ion-card>
+                <ion-button
+                    :router-link="
+                        'scan?longitude=' +
+                        location.longitude +
+                        '&latitude=' +
+                        location.latitude
+                    "
+                    router-direction="forward"
+                >
+                    SCAN
+                </ion-button>
+            </ion-card>
+        </ion-content>
+    </ion-page>
+    <!-- <div class="container">
         <button v-if="location != null">
             <nuxt-link
                 class="link"
                 :to="{
                     path: 'scan',
                     query: {
-                        longitude: location.coords.longitude,
-                        latitude: location.coords.latitude,
+                        longitude: location.longitude,
+                        latitude: location.latitude,
                     },
                 }"
                 >Scan</nuxt-link
@@ -15,38 +37,34 @@
         </button>
         <p v-else-if="gettingLocation">Getting location...</p>
         <p v-else-if="errorStr">Something went wrong: {{ errorStr }}</p>
-    </div>
+    </div> -->
 </template>
 
 <script setup>
     import { onMounted, ref, onUnmounted } from "vue";
+    import { Geolocation } from "@capacitor/geolocation";
 
     const location = ref(null);
     const errorStr = ref("");
     const gettingLocation = ref(false);
     let watcher = null;
 
-    onMounted(() => {
-        if (!navigator.geolocation) {
-            errorStr = "Geolocation is not available.";
-            return;
-        }
+    onMounted(async () => {
         gettingLocation.value = true;
 
-        watcher = navigator.geolocation.watchPosition(
-            (pos) => {
-                location.value = pos;
-                gettingLocation.value = false;
-            },
-            (err) => {
-                errorStr.value = err.message;
-                gettingLocation.value = false;
+        watcher = await Geolocation.watchPosition({}, (pos, err) => {
+            if (err) {
+                errorStr.value = err;
+                return;
             }
-        );
+            location.value = pos.coords;
+            console.log("got coords ", pos.coords);
+        });
+        gettingLocation.value = false;
     });
 
-    onUnmounted(() => {
-        if (watcher) navigator.geolocation.clearWatch(watcher);
+    onUnmounted(async () => {
+        if (watcher != null) await Geolocation.clearWatch(watcher);
     });
 </script>
 

@@ -43,3 +43,18 @@ You might want to preview the result of your build locally, to do so, run the fo
 ```bash
 yarn preview
 ```
+
+## Running on iOS
+
+Run `npx cap open ios` to open the project in Xcode. Then, add the
+following to your `info.plist`:
+
+```
+Privacy - Location Always Usage Description
+Privacy - Location When In Use Usage Description
+Privacy - Camera Usage Description
+Privacy - Photo Library Additions Usage Description
+Privacy - Photo Library Usage Description
+```
+
+To run in a simulator, `yarn ios`.

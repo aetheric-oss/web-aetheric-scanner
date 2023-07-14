@@ -1,0 +1,7 @@
+{
+  "name": "Arrow Parcel Scanner",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
