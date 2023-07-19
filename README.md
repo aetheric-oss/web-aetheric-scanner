@@ -46,6 +46,11 @@ yarn preview
 
 ## Running on iOS
 
+MAKE SURE YOU ARE CONNECTED TO RELIABLE INTERNET.
+
+If this is the first time running the app, run `npx cap add ios` to add
+the iOS platform.
+
 Run `npx cap open ios` to open the project in Xcode. Then, add the
 following to your `info.plist`:
 
@@ -58,3 +63,6 @@ Privacy - Photo Library Usage Description
 ```
 
 To run in a simulator, `yarn ios`.
+
+Note: it's always easier to run the app from XCode than using the `npx`
+commands.

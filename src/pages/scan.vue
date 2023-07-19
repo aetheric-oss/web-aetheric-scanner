@@ -214,7 +214,6 @@
 
     .container {
         margin: 0 auto;
-        max-width: 960px;
         padding: 2rem;
         display: flex;
         flex-direction: column;
@@ -222,9 +221,12 @@
     }
 
     .fullscreen {
-        /* z-index: 1000; */
-        height: 100%;
-        width: 100%;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
     }
 
     .loading-indicator {
@@ -237,3 +239,26 @@
         align-items: center;
     }
 </style>
+<!--
+<style scoped>
+    .qrcode-stream__camera,
+    .qrcode-stream__pause-frame {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        background-size: cover;
+        max-width: inherit !important;
+        max-height: inherit !important;
+    }
+
+    .qrcode-stream__inner-wrapper {
+        position: inherit !important;
+        max-width: inherit !important;
+        max-height: inherit !important;
+        z-index: inherit !important;
+    }
+</style> -->
