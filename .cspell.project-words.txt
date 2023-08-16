@@ -7,3 +7,6 @@ popperjs
 smartlook
 webapps
 commitlint
+qrcode
+toastification
+Qrcode
